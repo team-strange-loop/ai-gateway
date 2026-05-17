@@ -1,16 +1,20 @@
 {
-  "name": "ai-gateway-skill",
+  "name": "ai-gateway",
   "version": "0.1.0",
   "private": true,
-  "description": "Bundled AI Gateway CLI for the ai-gateway skill",
-  "type": "commonjs",
+  "type": "module",
+  "main": "bridge/ai-gateway.cjs",
   "bin": {
     "ai-gateway": "bridge/ai-gateway.cjs"
   },
   "scripts": {
-    "providers": "node bridge/ai-gateway.cjs providers"
+    "build": "node scripts/build.mjs",
+    "postinstall": "node scripts/build.mjs",
+    "start": "node bridge/ai-gateway.cjs"
   },
-  "engines": {
-    "node": ">=18"
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
   }
 }

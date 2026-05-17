@@ -17,6 +17,10 @@ Run it from this skill root with `node bridge/ai-gateway.cjs ...`. If the skill
 is installed under a larger skills directory, first locate this `SKILL.md` and
 use the adjacent `bridge/ai-gateway.cjs` file.
 
+The repository also includes the TypeScript source under `src/` plus
+`scripts/build.mjs`, `tsconfig.json`, `package.json`, and `package-lock.json` so
+the bridge can be developed, rebuilt, and reinstalled from this skill repo.
+
 ## Available Providers
 
 | Provider | Type | Default Model | Detection |
@@ -32,9 +36,32 @@ use the adjacent `bridge/ai-gateway.cjs` file.
 - Node.js 18+
 - Provider-specific CLIs or API keys depending on the provider
 
-No package install is required for the bundled bridge. `package.json` is present
-only to expose metadata and an optional `ai-gateway` bin if the repo is installed
-with a Node package manager.
+No package install is required just to run the bundled bridge. For development,
+install dependencies and rebuild from the skill root.
+
+## Development
+
+```bash
+npm install
+npm run build
+node bridge/ai-gateway.cjs providers
+```
+
+Repository layout:
+
+```text
+SKILL.md
+src/                  # TypeScript source
+scripts/build.mjs     # esbuild bundle step
+bridge/ai-gateway.cjs # generated runnable bridge
+package.json
+package-lock.json
+tsconfig.json
+```
+
+When editing provider behavior, change `src/`, run `npm run build`, then verify
+the generated `bridge/ai-gateway.cjs` with `node bridge/ai-gateway.cjs providers`
+and at least one provider-specific smoke test when credentials are available.
 
 ## CLI Path
 
