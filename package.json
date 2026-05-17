@@ -1,0 +1,16 @@
+{
+  "name": "ai-gateway-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bundled AI Gateway CLI for the ai-gateway skill",
+  "type": "commonjs",
+  "bin": {
+    "ai-gateway": "bridge/ai-gateway.cjs"
+  },
+  "scripts": {
+    "providers": "node bridge/ai-gateway.cjs providers"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

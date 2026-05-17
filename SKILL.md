@@ -5,7 +5,17 @@ description: "This skill should be used when the user asks to 'call external LLM
 
 # AI Gateway
 
-Unified CLI for calling external LLM providers from Claude Code via the Bash tool.
+Unified CLI for calling external LLM providers from an agent session.
+
+This skill includes a bundled executable bridge at:
+
+```text
+bridge/ai-gateway.cjs
+```
+
+Run it from this skill root with `node bridge/ai-gateway.cjs ...`. If the skill
+is installed under a larger skills directory, first locate this `SKILL.md` and
+use the adjacent `bridge/ai-gateway.cjs` file.
 
 ## Available Providers
 
@@ -17,10 +27,19 @@ Unified CLI for calling external LLM providers from Claude Code via the Bash too
 | openrouter | API | anthropic/claude-sonnet-4 | OPENROUTER_API_KEY env |
 | ollama | API | llama3.3 | localhost:11434 |
 
+## Requirements
+
+- Node.js 18+
+- Provider-specific CLIs or API keys depending on the provider
+
+No package install is required for the bundled bridge. `package.json` is present
+only to expose metadata and an optional `ai-gateway` bin if the repo is installed
+with a Node package manager.
+
 ## CLI Path
 
 ```
-node ${pluginDir}/bridge/ai-gateway.cjs
+node bridge/ai-gateway.cjs
 ```
 
 ## Commands
@@ -28,7 +47,7 @@ node ${pluginDir}/bridge/ai-gateway.cjs
 ### `ask` - Send prompt to provider
 
 ```bash
-node ${pluginDir}/bridge/ai-gateway.cjs ask \
+node bridge/ai-gateway.cjs ask \
   --provider codex \
   --prompt "Your prompt here" \
   --model "model-name" \
@@ -44,7 +63,7 @@ Optional: `--model`, `--system`, `--files` (comma-separated), `--temperature`, `
 ### `providers` - List available providers
 
 ```bash
-node ${pluginDir}/bridge/ai-gateway.cjs providers
+node bridge/ai-gateway.cjs providers
 ```
 
 No parameters. Returns status of all providers.
@@ -52,7 +71,7 @@ No parameters. Returns status of all providers.
 ### `chain` - Execute multi-step LLM pipeline
 
 ```bash
-node ${pluginDir}/bridge/ai-gateway.cjs chain \
+node bridge/ai-gateway.cjs chain \
   --json '{"steps":[{"provider":"gemini","prompt":"Translate: {{input}}"},{"provider":"openrouter","prompt":"Verify: {{input}}"}],"initial_input":"Hello","return_all":true}'
 ```
 
@@ -65,12 +84,12 @@ JSON fields:
 
 Check available providers:
 ```bash
-node ${pluginDir}/bridge/ai-gateway.cjs providers
+node bridge/ai-gateway.cjs providers
 ```
 
 Ask Codex for code review:
 ```bash
-node ${pluginDir}/bridge/ai-gateway.cjs ask \
+node bridge/ai-gateway.cjs ask \
   --provider codex \
   --system "You are a code reviewer" \
   --prompt "Review this function: $(cat src/main.ts)"
@@ -78,7 +97,7 @@ node ${pluginDir}/bridge/ai-gateway.cjs ask \
 
 Ask Gemini with file context:
 ```bash
-node ${pluginDir}/bridge/ai-gateway.cjs ask \
+node bridge/ai-gateway.cjs ask \
   --provider gemini \
   --prompt "Review the UI design in these files" \
   --files src/App.tsx,src/components/Header.tsx
@@ -86,7 +105,7 @@ node ${pluginDir}/bridge/ai-gateway.cjs ask \
 
 Chain two LLMs (translate then verify):
 ```bash
-node ${pluginDir}/bridge/ai-gateway.cjs chain \
+node bridge/ai-gateway.cjs chain \
   --json '{"steps":[{"provider":"gemini","prompt":"Translate to Korean:\n\n{{input}}","label":"translator"},{"provider":"openrouter","prompt":"Verify this translation for accuracy:\n\n{{input}}","label":"verifier"}],"initial_input":"Hello, how are you?","return_all":true}'
 ```
 
