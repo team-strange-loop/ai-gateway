@@ -39,13 +39,72 @@ the bridge can be developed, rebuilt, and reinstalled from this skill repo.
 No package install is required just to run the bundled bridge. For development,
 install dependencies and rebuild from the skill root.
 
-## Development
+## Build
 
 ```bash
 npm install
 npm run build
 node bridge/ai-gateway.cjs providers
 ```
+
+`npm install` also runs `postinstall`, which builds `bridge/ai-gateway.cjs`.
+Use `npm run build` explicitly after editing `src/`.
+
+The build script writes only to this repository by default:
+
+```text
+bridge/ai-gateway.cjs
+```
+
+To also copy the generated bridge somewhere else, set:
+
+```bash
+AI_GATEWAY_PLUGIN_BRIDGE=/absolute/path/to/ai-gateway.cjs npm run build
+```
+
+## Installation
+
+### Skill Installation
+
+Install this as a reusable skill with the skills CLI:
+
+```bash
+npx skills add team-strange-loop/ai-gateway
+```
+
+After installation, locate the installed skill directory and run:
+
+```bash
+node bridge/ai-gateway.cjs providers
+```
+
+### Local CLI Installation
+
+For development on this repository, install dependencies and expose the
+`ai-gateway` command locally:
+
+```bash
+npm install
+npm link
+ai-gateway providers
+```
+
+To remove the linked command:
+
+```bash
+npm unlink -g ai-gateway
+```
+
+### No-Install Execution
+
+If you only need to run the bundled bridge from this checkout:
+
+```bash
+node bridge/ai-gateway.cjs providers
+node bridge/ai-gateway.cjs ask --provider codex --prompt "Hello"
+```
+
+## Development
 
 Repository layout:
 
